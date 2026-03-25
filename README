@@ -54,3 +54,5 @@ Tasks can have the following statuses:
 - `To do` - Default status for new tasks
 - `In progress` - Task being worked on
 - `Done` - Completed task
+
+Inspired by: https://roadmap.sh/projects/task-tracker
