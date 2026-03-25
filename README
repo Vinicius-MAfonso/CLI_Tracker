@@ -1,0 +1,56 @@
+# CLI Tracker
+
+## Overview
+
+`task_cli.py` is a command-line interface tool for managing and tracking tasks. It allows users to create, view, update, and delete tasks directly from the terminal. Tasks are stored in a JSON database file.
+
+## Features
+
+- Create new tasks
+- List all tasks with optional status filtering
+- Mark tasks as in-progress or complete
+- Update task descriptions
+- Delete tasks
+- Persistent JSON-based storage
+
+## Installation
+
+1. Ensure you have Python 3.6+ installed
+2. Clone or download the project
+3. Navigate to the project directory
+
+## Usage
+
+### Basic Commands
+
+```bash
+# Add a new task
+python task_cli.py add "Your task description"
+
+# List all tasks
+python task_cli.py list
+
+# List tasks by status
+python task_cli.py list done
+python task_cli.py list to-do
+python task_cli.py list in-progress
+
+# Update a task description
+python task_cli.py update <id> "New description"
+
+# Mark task as in-progress
+python task_cli.py mark-in-progress <id>
+
+# Mark task as done
+python task_cli.py mark-done <id>
+
+# Delete a task
+python task_cli.py delete <id>
+```
+
+## Task Status
+
+Tasks can have the following statuses:
+- `To do` - Default status for new tasks
+- `In progress` - Task being worked on
+- `Done` - Completed task

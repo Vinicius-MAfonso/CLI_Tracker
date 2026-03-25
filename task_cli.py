@@ -26,12 +26,36 @@ class Database:
             self.tasks = []
 
     def _find_task_index(self, id) -> int:
+        """
+        Find the index of a task in the tasks list by its ID.
+        
+        This method iterates through the tasks list to locate a task with the specified ID
+        and returns its index position.
+        
+        :param id: The unique identifier of the task to find
+        :type id: int or str
+        :return: The index position of the task in the tasks list
+        :rtype: int
+        :raises RuntimeError: If no task with the specified ID is found
+        """
         for index, task in enumerate(self.tasks):
             if task["id"] == id:
                 return index
         raise RuntimeError(f"No task with this id({id})")
 
     def _get_new_id(self) -> int:
+        """
+        Generate a new unique task ID by finding the first available integer.
+        
+        This method finds the smallest positive integer that is not already
+        in use as a task ID. It iterates through task IDs to find gaps in
+        the numbering sequence.
+        
+        Returns:
+            int: A unique task ID that is not currently in use.
+                 Returns 1 if no tasks exist, otherwise returns the first
+                 available positive integer greater than 1.
+        """
         if not self.tasks:
             return 1
         task_ids = [task["id"] for task in self.tasks]
@@ -41,6 +65,13 @@ class Database:
         return index
 
     def create(self, description: str):
+        """
+        Creates a new task with the given description and saves it to the database.
+
+        :param description: Task description
+        :return: None
+        :side effects: Modifies the database by adding a new task and saving it.
+        """
         task = Task(
             self._get_new_id(),
             description,
@@ -52,14 +83,35 @@ class Database:
         self.save()
 
     def update(self, id: int, field: str, new_field_value: str):
+        """
+        Updates a task's field with a new value.
+
+        Allowed fields to update are "description" and "status".
+
+        :param id: Task unique id
+        :param field: The field you want to change ("description" or "status")
+        :param new_field_value: New value of the selected field
+        """
         self.tasks[self._find_task_index(id)][field] = new_field_value
+        self.tasks[self._find_task_index(id)]["updated_at"] = str(datetime.now())
         self.save()
 
     def delete(self, id: int):
+        """
+        Deletes the task with the given ID.
+
+        :param id: Task unique id
+        :raises RuntimeError: If no task with the specified ID exists, a RuntimeError will be raised.
+        """
         self.tasks.pop(self._find_task_index(id))
         self.save()
 
     def list(self, filter: str):
+        """
+        Lists tasks
+
+        :param filter: Filter tasks by status ("done", "to-do", "in-progress"), or show all if None.
+        """
         for task in self.tasks:
             if filter:
                 if task["status"] != filter.replace("-", " ").capitalize():
